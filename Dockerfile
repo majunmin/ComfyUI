@@ -1,11 +1,9 @@
-FROM python:3.11
+FROM python:3.11-slim
 LABEL maintainer="majunminq@163.com"
 
 ARG USERNAME=comfyui
 ARG USER_UID=1000
-ARG USER_GID
-
-=${USER_UID}
+ARG USER_GID=${USER_UID}
 
 RUN <<EOF
     groupadd --gid ${USER_GID} ${USERNAME}
@@ -26,11 +24,13 @@ RUN <<EOF
         libgl1 \
         rsync \
                 libglib2.0-dev
-    rm -rf /var/lib/apt/lists/*
-    mkdir /var/log/eas
-    chown  -R ${USER_UID}:${USER_GID} /var/log/eas
-    chown  -R ${USER_UID}:${USER_GID} /code/stable-diffusion-webui/data
+        rm -rf /var/lib/apt/lists/*
 EOF
+
+RUN   mkdir -p /var/log/eas && \
+      mkdir -p /code/stable-diffusion-webui/data && \
+      chown  -R ${USER_UID}:${USER_GID} /var/log/eas && \
+      chown  -R ${USER_UID}:${USER_GID} /code/stable-diffusion-webui/data
 
 USER ${USER_UID}:${USER_GID}
 
@@ -44,10 +44,11 @@ RUN python -m venv ${VIRTUAL_ENV}
 ENV PATH="${VIRTUAL_ENV_CUSTOM}/bin:${VIRTUAL_ENV}/bin:${PATH}"
 
 
-RUN pip install --no-cache-dir --upgrade setuptools wheel && pip install --no-cache-dir --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu \
-    && git clone --recurse-submodules https://github.com/majunmin/ComfyUI.git
+RUN pip install pip install requirements.txt \
+    && git clone --recurse-submodules https://github.com/majunmin/ComfyUI.git \
+    && cd ComfyUI && git checkout feature/v0.2.4
 
-WORKDIR    /app/ComfyUI
+WORKDIR  /app/ComfyUI
 
 RUN pip install --no-cache-dir -r requirements.txt \
     && cd custom_nodes \
@@ -67,4 +68,4 @@ CMD \
         rsync -aP "${VIRTUAL_ENV}/" "${VIRTUAL_ENV_CUSTOM}/" ;\
         sed -i "s!${VIRTUAL_ENV}!${VIRTUAL_ENV_CUSTOM}!g" "${VIRTUAL_ENV_CUSTOM}/pyvenv.cfg" ;\
     fi ;\
-    python -u main.py --listen ${COMFYUI_ADDRESS} --port ${COMFYUI_PORT} --input-directory "${INPUT_DIR}"--output-directory "${OUTPUT_DIR}"
+    python -u main.py --listen ${COMFYUI_ADDRESS} --port ${COMFYUI_PORT} --input-directory "${INPUT_DIR}" --output-directory "${OUTPUT_DIR}"

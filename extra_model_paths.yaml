@@ -27,18 +27,19 @@ comfyui:
   base_path: /code/stable-diffusion-webui/data/
   # You can use is_default to mark that these folders should be listed first, and used as the default dirs for eg downloads
   #is_default: true
-  checkpoints: /code/stable-diffusion-webui/data/models/checkpoints/
-  clip: /code/stable-diffusion-webui/data/models/clip/
-  clip_vision: /code/stable-diffusion-webui/data/models/clip_vision/
-  configs: /code/stable-diffusion-webui/data/models/configs/
-  controlnet: /code/stable-diffusion-webui/data/models/controlnet/
+  checkpoints: models/checkpoints/
+  clip: models/clip/
+  clip_vision: models/clip_vision/
+  configs: models/configs/
+  controlnet: models/controlnet/
   diffusion_models: |
-    /code/stable-diffusion-webui/data/models/diffusion_models
-    /code/stable-diffusion-webui/data/models/unet
-  embeddings: /code/stable-diffusion-webui/data/models/embeddings/
-  loras: /code/stable-diffusion-webui/data/models/loras/
-  upscale_models: /code/stable-diffusion-webui/data/models/upscale_models/
-  vae: /code/stable-diffusion-webui/data/models/vae/
+    models/diffusion_models
+    models/unet
+  embeddings: models/embeddings/
+  loras: models/loras/
+  upscale_models: models/upscale_models/
+  vae: models/vae/
+  custom_nodes: custom_nodes
 
 #other_ui:
 #    base_path: path/to/ui
