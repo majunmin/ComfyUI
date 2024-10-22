@@ -3,7 +3,9 @@ LABEL maintainer="majunminq@163.com"
 
 ARG USERNAME=comfyui
 ARG USER_UID=1000
-ARG USER_GID=${USER_UID}
+ARG USER_GID
+
+=${USER_UID}
 
 RUN <<EOF
     groupadd --gid ${USER_GID} ${USERNAME}
@@ -25,6 +27,9 @@ RUN <<EOF
         rsync \
                 libglib2.0-dev
     rm -rf /var/lib/apt/lists/*
+    mkdir /var/log/eas
+    chown  -R ${USER_UID}:${USER_GID} /var/log/eas
+    chown  -R ${USER_UID}:${USER_GID} /code/stable-diffusion-webui/data
 EOF
 
 USER ${USER_UID}:${USER_GID}
@@ -62,4 +67,4 @@ CMD \
         rsync -aP "${VIRTUAL_ENV}/" "${VIRTUAL_ENV_CUSTOM}/" ;\
         sed -i "s!${VIRTUAL_ENV}!${VIRTUAL_ENV_CUSTOM}!g" "${VIRTUAL_ENV_CUSTOM}/pyvenv.cfg" ;\
     fi ;\
-    python -u main.py --listen ${COMFYUI_ADDRESS} --port ${COMFYUI_PORT} --input-directory ${INPUT_DIR} --output-directory ${OUTPUT_DIR}
+    python -u main.py --listen ${COMFYUI_ADDRESS} --port ${COMFYUI_PORT} --input-directory "${INPUT_DIR}"--output-directory "${OUTPUT_DIR}"
