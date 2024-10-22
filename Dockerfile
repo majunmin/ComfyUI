@@ -40,7 +40,7 @@ ENV PATH="${VIRTUAL_ENV_CUSTOM}/bin:${VIRTUAL_ENV}/bin:${PATH}"
 
 
 RUN pip install --no-cache-dir --upgrade setuptools wheel && pip install --no-cache-dir --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu \
-    && git clone --recurse-submodules https://github.com/comfyanonymous/ComfyUI.git
+    && git clone --recurse-submodules https://github.com/majunmin/ComfyUI.git
 
 WORKDIR    /app/ComfyUI
 
