@@ -44,28 +44,29 @@ RUN python -m venv ${VIRTUAL_ENV}
 ENV PATH="${VIRTUAL_ENV_CUSTOM}/bin:${VIRTUAL_ENV}/bin:${PATH}"
 
 
-RUN pip install pip install requirements.txt \
-    && git clone --recurse-submodules https://github.com/majunmin/ComfyUI.git \
+RUN git clone --recurse-submodules https://github.com/majunmin/ComfyUI.git \
     && cd ComfyUI && git checkout feature/v0.2.4
 
 WORKDIR  /app/ComfyUI
 
 RUN pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir pip-system-certs \
     && cd custom_nodes \
     && git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
+    && git clone https://github.com/Gourieff/comfyui-reactor-node.git \
+    && git clone https://github.com/balazik/ComfyUI-PuLID-Flux.git \
     && pip install --no-cache-dir -r ComfyUI-Manager/requirements.txt \
-    && git clone https://github.com/AIGODLIKE/AIGODLIKE-COMFYUI-TRANSLATION.git
+    && pip install --no-cache-dir -r comfyui-reactor-node/requirements.txt \
+    && pip install --no-cache-dir -r ComfyUI-PuLID-Flux/requirements.txt
 
 
 ENV COMFYUI_ADDRESS=0.0.0.0
 ENV COMFYUI_PORT=8000
 ENV COMFYUI_EXTRA_ARGS=""
-ENV INPUT_DIR = "/code/stable-diffusion-webui/data/input/"
-ENV OUTPUT_DIR = "/code/stable-diffusion-webui/data/output"
 
 CMD \
     if [ -d "${VIRTUAL_ENV_CUSTOM}" ]; then \
         rsync -aP "${VIRTUAL_ENV}/" "${VIRTUAL_ENV_CUSTOM}/" ;\
         sed -i "s!${VIRTUAL_ENV}!${VIRTUAL_ENV_CUSTOM}!g" "${VIRTUAL_ENV_CUSTOM}/pyvenv.cfg" ;\
     fi ;\
-    python -u main.py --listen ${COMFYUI_ADDRESS} --port ${COMFYUI_PORT} --input-directory "${INPUT_DIR}" --output-directory "${OUTPUT_DIR}"
+    python -u main.py --listen ${COMFYUI_ADDRESS} --port ${COMFYUI_PORT}
