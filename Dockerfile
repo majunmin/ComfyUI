@@ -36,18 +36,14 @@ RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
 && git clone https://github.com/Gourieff/comfyui-reactor-node.git \
 && git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
 
-WORKDIR /app/code/ComfyUI
-
-# 创建虚拟环境
-RUN python -m venv venv
+WORKDIR /app/code/
 
 # 激活虚拟环境并安装依赖
-RUN . venv/bin/activate && \
-    pip install -r requirements.txt --no-cache-dir && \
-    pip install -r custom_nodes/ComfyUI-Manager/requirements.txt --no-cache-dir && \
-    pip install -r custom_nodes/comfyui-mixlab-nodes/requirements.txt --no-cache-dir && \
-    pip install -r custom_nodes/ComfyUI-PuLID-Flux-Enhanced/requirements.txt --no-cache-dir && \
-    pip install -r custom_nodes/comfyui-reactor-node/requirements.txt --no-cache-dir
+RUN pip install -r ComfyUI/requirements.txt --no-cache-dir && \
+    pip install -r ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt --no-cache-dir && \
+    pip install -r ComfyUI/custom_nodes/comfyui-mixlab-nodes/requirements.txt --no-cache-dir && \
+    pip install -r ComfyUI/custom_nodes/ComfyUI-PuLID-Flux-Enhanced/requirements.txt --no-cache-dir && \
+    pip install -r ComfyUI/custom_nodes/comfyui-reactor-node/requirements.txt --no-cache-dir
 
 ENV COMFYUI_ADDRESS=0.0.0.0
 ENV COMFYUI_PORT=8000
@@ -56,4 +52,4 @@ ENV INPUT_DIR="/app/data/input"
 ENV OUTPUT_DIR="/app/data/output"
 
 # 启动 ComfyUI
-CMD ["sh", "-c", ". venv/bin/activate && python main.py --listen 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "python main.py --listen 0.0.0.0 --port 8000"]
