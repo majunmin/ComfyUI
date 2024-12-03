@@ -1,49 +1,39 @@
-FROM nvidia/cuda:12.4.0-devel-ubuntu22.04
+# 第一阶段：构建环境
+FROM nvidia/cuda:12.4.0-devel-ubuntu22.04 AS build
 LABEL maintainer="majunminq@163.com"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV COMFYUI_BRANCH=v0.3.6-wow
 
-RUN <<EOF
- apt-get update
- apt-get install -y --no-install-recommends \
- software-properties-common \
- && add-apt-repository ppa:deadsnakes/ppa \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
- wget \
- git \
- git-lfs \
- gcc \
- g++ \
- build-essential \
- fonts-recommended \
- python3.12 \
- python3.12-dev \
- python3.12-venv \
- python3-pip \
- libgl1 \
- rsync \
- libglib2.0-dev
- apt-get clean && \
- rm -rf /var/lib/apt/lists/*
-EOF
-
-USER root
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    software-properties-common \
+    wget \
+    git \
+    git-lfs \
+    gcc \
+    g++ \
+    build-essential \
+    fonts-recommended \
+    python3.12 \
+    python3.12-dev \
+    python3.12-venv \
+    python3-pip \
+    libgl1 \
+    rsync \
+    libglib2.0-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # 创建虚拟环境
 WORKDIR /app/code
 RUN python3.12 -m venv venv
 
-
-WORKDIR /app/code/ComfyUI
-
 # 克隆 ComfyUI 仓库
+WORKDIR /app/code/ComfyUI
 RUN git clone https://github.com/majunmin/ComfyUI.git . && git checkout $COMFYUI_BRANCH
 
-WORKDIR /app/code/ComfyUI
-
-# 激活虚拟环境并安装依赖
+# 安装依赖
 RUN . /app/code/venv/bin/activate && \
     pip install --upgrade pip && \
     pip install --upgrade setuptools && \
@@ -54,6 +44,13 @@ RUN . /app/code/venv/bin/activate && \
     pip install -r https://raw.githubusercontent.com/sipie800/ComfyUI-PuLID-Flux-Enhanced/refs/heads/main/requirements.txt --no-cache-dir && \
     pip install -r https://raw.githubusercontent.com/Gourieff/comfyui-reactor-node/refs/heads/main/requirements.txt --no-cache-dir
 
+# 第二阶段：运行环境
+FROM nvidia/cuda:12.4.0-runtime-ubuntu22.04
+
+# 复制构建阶段的内容
+COPY --from=build /app/code /app/code
+
+# 设置环境变量
 ENV COMFYUI_ADDRESS=0.0.0.0
 ENV COMFYUI_PORT=8000
 ENV COMFYUI_EXTRA_ARGS=""
@@ -61,4 +58,5 @@ ENV INPUT_DIR="/app/data/input"
 ENV OUTPUT_DIR="/app/data/output"
 
 # 启动 ComfyUI
+WORKDIR /app/code/ComfyUI
 CMD ["sh", "-c", ". /app/code/venv/bin/activate && python main.py --listen 0.0.0.0 --port 8000"]
