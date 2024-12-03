@@ -36,14 +36,14 @@ RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
 && git clone https://github.com/Gourieff/comfyui-reactor-node.git \
 && git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
 
-WORKDIR /app/code/
+WORKDIR /app/code/ComfyUI
 
 # 激活虚拟环境并安装依赖
-RUN pip install -r ComfyUI/requirements.txt --no-cache-dir && \
-    pip install -r ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt --no-cache-dir && \
-    pip install -r ComfyUI/custom_nodes/comfyui-mixlab-nodes/requirements.txt --no-cache-dir && \
-    pip install -r ComfyUI/custom_nodes/ComfyUI-PuLID-Flux-Enhanced/requirements.txt --no-cache-dir && \
-    pip install -r ComfyUI/custom_nodes/comfyui-reactor-node/requirements.txt --no-cache-dir
+RUN pip install -r requirements.txt --no-cache-dir && \
+    pip install -r custom_nodes/ComfyUI-Manager/requirements.txt --no-cache-dir && \
+    pip install -r custom_nodes/comfyui-mixlab-nodes/requirements.txt --no-cache-dir && \
+    pip install -r custom_nodes/ComfyUI-PuLID-Flux-Enhanced/requirements.txt --no-cache-dir && \
+    pip install -r custom_nodes/comfyui-reactor-node/requirements.txt --no-cache-dir
 
 ENV COMFYUI_ADDRESS=0.0.0.0
 ENV COMFYUI_PORT=8000
