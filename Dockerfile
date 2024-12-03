@@ -54,8 +54,8 @@ COPY --from=build /app/code /app/code
 ENV COMFYUI_ADDRESS=0.0.0.0
 ENV COMFYUI_PORT=8000
 ENV COMFYUI_EXTRA_ARGS=""
-ENV INPUT_DIR="/app/data/input"
-ENV OUTPUT_DIR="/app/data/output"
+ENV INPUT_DIR="/data/ext1/input"
+ENV OUTPUT_DIR="/data/ext1/output"
 
 # 启动 ComfyUI
 WORKDIR /app/code/ComfyUI
