@@ -41,23 +41,7 @@ WORKDIR /app/code/ComfyUI
 # 克隆 ComfyUI 仓库
 RUN git clone https://github.com/majunmin/ComfyUI.git . && git checkout $COMFYUI_BRANCH
 
-
-WORKDIR /app/code/ComfyUI/custom_nodes
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
-&& git clone https://github.com/tsogzark/ComfyUI-load-image-from-url.git \
-&& git clone https://github.com/JettHu/ComfyUI-TCD.git \
-&& git clone https://github.com/fofr/ComfyUI-HyperSDXL1StepUnetScheduler.git \
-&& git clone https://github.com/TheMistoAI/MistoControlNet-Flux-dev.git \
-&& git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git \
-&& git clone https://github.com/erosDiffusion/ComfyUI-enricos-nodes.git \
-&& git clone https://github.com/shadowcz007/comfyui-mixlab-nodes.git \
-&& git clone https://github.com/sipie800/ComfyUI-PuLID-Flux-Enhanced.git \
-&& git clone https://github.com/Gourieff/comfyui-reactor-node.git \
-&& git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
-
 WORKDIR /app/code/ComfyUI
-
-
 
 # 激活虚拟环境并安装依赖
 RUN . /app/code/venv/bin/activate && \
@@ -65,10 +49,10 @@ RUN . /app/code/venv/bin/activate && \
     pip install --upgrade setuptools && \
     pip install diffusers && \
     pip install -r requirements.txt --no-cache-dir && \
-    pip install -r custom_nodes/ComfyUI-Manager/requirements.txt --no-cache-dir && \
-    pip install -r custom_nodes/comfyui-mixlab-nodes/requirements.txt --no-cache-dir && \
-    pip install -r custom_nodes/ComfyUI-PuLID-Flux-Enhanced/requirements.txt --no-cache-dir && \
-    pip install -r custom_nodes/comfyui-reactor-node/requirements.txt --no-cache-dir
+    pip install -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/refs/heads/main/requirements.txt --no-cache-dir && \
+    pip install -r https://raw.githubusercontent.com/shadowcz007/comfyui-mixlab-nodes/refs/heads/main/requirements.txt --no-cache-dir && \
+    pip install -r https://raw.githubusercontent.com/sipie800/ComfyUI-PuLID-Flux-Enhanced/refs/heads/main/requirements.txt --no-cache-dir && \
+    pip install -r https://raw.githubusercontent.com/Gourieff/comfyui-reactor-node/refs/heads/main/requirements.txt --no-cache-dir
 
 ENV COMFYUI_ADDRESS=0.0.0.0
 ENV COMFYUI_PORT=8000

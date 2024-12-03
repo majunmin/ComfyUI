@@ -41,6 +41,7 @@ comfyui:
      upscale_models: models/upscale_models/
      vae: models/vae/
      unet: models/unet/
+     custom_nodes: /data/ext1/comfyui/custom_nodes
 
 #other_ui:
 #    base_path: path/to/ui
