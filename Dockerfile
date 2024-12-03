@@ -7,7 +7,10 @@ ENV COMFYUI_BRANCH=v0.3.6-wow
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    software-properties-common \
+    software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
     wget \
     git \
     git-lfs \
