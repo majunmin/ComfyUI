@@ -1,45 +1,29 @@
-# 使用官方的 Ubuntu 镜像作为基础镜像
-FROM ubuntu:latest
+FROM python:3.12-slim
+LABEL maintainer="majunminq@163.com"
 
-# 设置环境变量，避免交互式配置提示
-ENV DEBIAN_FRONTEND=noninteractive
+RUN <<EOF
+    apt-get update
+    apt-get install -y --no-install-recommends \
+        wget \
+        git \
+        git-lfs \
+        gcc \
+        g++ \
+        build-essential \
+        fonts-recommended \
+        python3-dev    \
+        libgl1 \
+        rsync \
+                libglib2.0-dev
+        rm -rf /var/lib/apt/lists/*
+EOF
 
-# 更新包列表并安装必要的依赖项
-RUN apt-get update && \
-    apt-get install -y \
-    curl \
-    git \
-    python3.12 \
-    python3.12-venv \
-    python3.12-dev \
-    build-essential \
-    libssl-dev \
-    zlib1g-dev \
-    libncurses5-dev \
-    libncursesw5-dev \
-    libreadline-dev \
-    libsqlite3-dev \
-    libgdbm-dev \
-    libdb5.3-dev \
-    libbz2-dev \
-    libexpat1-dev \
-    liblzma-dev \
-    tk-dev \
-    libffi-dev \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
 
-# 设置 Python 3.12 为默认 Python 版本
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
-
-# 安装 pip
-RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3
-
-# 设置工作目录
 WORKDIR /app/code
 
+
 # 克隆 ComfyUI 仓库
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git .
+RUN git clone https://github.com/majunmin/ComfyUI.git .
 
 WORKDIR  /app/code/ComfyUI/custom_nodes
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
@@ -64,19 +48,11 @@ RUN pip install -r --no-cache-dir requirements.txt \
 
 
 
-WORKDIR  /app/code/
+ENV COMFYUI_ADDRESS=0.0.0.0
+ENV COMFYUI_PORT=8000
+ENV COMFYUI_EXTRA_ARGS=""
+ENV INPUT_DIR = "/app/data/input"
+ENV OUTPUT_DIR = "/app/data/output"
 
-# 创建虚拟环境
-RUN python3 -m venv venv
-
-# 激活虚拟环境并安装依赖
-RUN . venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124 && \
-    pip install -r requirements.txt
-
-# 暴露 ComfyUI 的默认端口
-EXPOSE 8000
-
-# 启动 ComfyUI
+# 启动comfyUI
 CMD ["sh", "-c", ". venv/bin/activate && python main.py --listen 0.0.0.0 --port 8000"]
