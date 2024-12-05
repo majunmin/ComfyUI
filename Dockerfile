@@ -8,9 +8,6 @@ RUN <<EOF
  apt-get update
  apt-get install -y --no-install-recommends \
  software-properties-common \
- && add-apt-repository ppa:deadsnakes/ppa \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
  wget \
  git \
  git-lfs \
@@ -18,10 +15,6 @@ RUN <<EOF
  g++ \
  build-essential \
  fonts-recommended \
- python3.12 \
- python3.12-dev \
- python3.12-venv \
- python3-pip \
  libgl1 \
  rsync \
  libglib2.0-dev
@@ -30,10 +23,6 @@ RUN <<EOF
 EOF
 
 USER root
-
-# 创建虚拟环境
-WORKDIR /app/code
-RUN python3.12 -m venv venv
 
 
 WORKDIR /app/code/ComfyUI
@@ -59,4 +48,4 @@ ENV COMFYUI_PORT=8000
 ENV COMFYUI_EXTRA_ARGS=""
 
 # 启动 ComfyUI
-CMD ["sh", "-c", ". /app/code/venv/bin/activate && python main.py --listen 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "python main.py --listen 0.0.0.0 --port 8000"]
