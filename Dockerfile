@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.4.0-devel-ubuntu22.04
+FROM nvidia/cuda:12.6.3-devel-ubuntu24.04
 LABEL maintainer="majunminq@163.com"
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -57,8 +57,6 @@ RUN . /app/code/venv/bin/activate && \
 ENV COMFYUI_ADDRESS=0.0.0.0
 ENV COMFYUI_PORT=8000
 ENV COMFYUI_EXTRA_ARGS=""
-ENV INPUT_DIR="/app/data/input"
-ENV OUTPUT_DIR="/app/data/output"
 
 # 启动 ComfyUI
 CMD ["sh", "-c", ". /app/code/venv/bin/activate && python main.py --listen 0.0.0.0 --port 8000"]
