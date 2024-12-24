@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.6.3-devel-ubuntu24.04
+FROM nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04
 LABEL maintainer="majunminq@163.com"
 
 ENV DEBIAN_FRONTEND=noninteractive
