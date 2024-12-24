@@ -23,6 +23,9 @@ RUN <<EOF
  python3.12-venv \
  python3-pip \
  libjpeg-dev \
+ libfreetype6-dev \
+ libtiff5-dev \
+ liblcms2-dev \
  zlib1g-dev \
  libgl1 \
  rsync \
@@ -45,6 +48,7 @@ RUN git clone https://github.com/majunmin/ComfyUI.git . && git checkout $COMFYUI
     . /app/code/venv/bin/activate && \
     pip install --upgrade pip && \
     pip install --upgrade setuptools && \
+    pip install --upgrade Pillow && \
     pip install diffusers && \
     pip install -r requirements.txt --no-cache-dir && \
     pip install -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/refs/heads/main/requirements.txt --no-cache-dir && \
@@ -55,7 +59,7 @@ RUN git clone https://github.com/majunmin/ComfyUI.git . && git checkout $COMFYUI
     pip install -r https://raw.githubusercontent.com/pythongosssss/ComfyUI-WD14-Tagger/refs/heads/main/requirements.txt --no-cache-dir && \
     pip install -r https://raw.githubusercontent.com/chflame163/ComfyUI_LayerStyle/refs/heads/main/requirements.txt --no-cache-dir && \
     pip install -r https://raw.githubusercontent.com/city96/ComfyUI_NetDist/refs/heads/main/requirements.txt --no-cache-dir && \
-    pip install -r https://raw.githubusercontent.com/city96/ComfyUI_NetDist/refs/heads/main/requirements.txt --no-cache-dir && \
+    pip install -r https://raw.githubusercontent.com/Seedsa/Fooocus_Nodes/refs/heads/main/requirements.txt --no-cache-dir && \
     pip install -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/refs/heads/main/requirements.txt --no-cache-dir && \
     pip install pip install simple-lama-inpainting
 
