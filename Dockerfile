@@ -15,6 +15,8 @@ RUN <<EOF
  g++ \
  build-essential \
  fonts-recommended \
+ libjpeg-dev \
+ zlib1g-dev \
  libgl1 \
  rsync \
  libglib2.0-dev
@@ -41,7 +43,15 @@ RUN . /app/code/venv/bin/activate && \
     pip install -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/refs/heads/main/requirements.txt --no-cache-dir && \
     pip install -r https://raw.githubusercontent.com/shadowcz007/comfyui-mixlab-nodes/refs/heads/main/requirements.txt --no-cache-dir && \
     pip install -r https://raw.githubusercontent.com/sipie800/ComfyUI-PuLID-Flux-Enhanced/refs/heads/main/requirements.txt --no-cache-dir && \
-    pip install -r https://raw.githubusercontent.com/Gourieff/comfyui-reactor-node/refs/heads/main/requirements.txt --no-cache-dir
+    pip install -r https://raw.githubusercontent.com/Gourieff/comfyui-reactor-node/refs/heads/main/requirements.txt --no-cache-dir && \
+    pip install -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Pack/refs/heads/Main/requirements.txt --no-cache-dir && \
+    pip install -r https://raw.githubusercontent.com/pythongosssss/ComfyUI-WD14-Tagger/refs/heads/main/requirements.txt && \
+    pip install -r https://raw.githubusercontent.com/chflame163/ComfyUI_LayerStyle/refs/heads/main/requirements.txt && \
+    pip install -r https://raw.githubusercontent.com/city96/ComfyUI_NetDist/refs/heads/main/requirements.txt && \
+    pip install -r https://raw.githubusercontent.com/city96/ComfyUI_NetDist/refs/heads/main/requirements.txt && \
+    pip install -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/refs/heads/main/requirements.txt && \
+    pip install pip install simple-lama-inpainting
+
 
 ENV COMFYUI_ADDRESS=0.0.0.0
 ENV COMFYUI_PORT=8000
