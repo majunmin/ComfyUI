@@ -33,16 +33,16 @@ EOF
 
 USER root
 
+# 创建虚拟环境
+WORKDIR /app/code
+RUN python3.12 -m venv venv
 
 WORKDIR /app/code/ComfyUI
 
 # 克隆 ComfyUI 仓库
-RUN git clone https://github.com/majunmin/ComfyUI.git . && git checkout $COMFYUI_BRANCH
-
-WORKDIR /app/code/ComfyUI
-
-# 激活虚拟环境并安装依赖
-RUN . /app/code/venv/bin/activate && \
+RUN git clone https://github.com/majunmin/ComfyUI.git . && git checkout $COMFYUI_BRANCH && \
+    # 激活虚拟环境并安装依赖 \
+    . /app/code/venv/bin/activate && \
     pip install --upgrade pip && \
     pip install --upgrade setuptools && \
     pip install diffusers && \
