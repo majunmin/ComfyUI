@@ -8,6 +8,9 @@ RUN <<EOF
  apt-get update
  apt-get install -y --no-install-recommends \
  software-properties-common \
+ && add-apt-repository ppa:deadsnakes/ppa \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends \
  wget \
  git \
  git-lfs \
@@ -15,6 +18,10 @@ RUN <<EOF
  g++ \
  build-essential \
  fonts-recommended \
+ python3.12 \
+ python3.12-dev \
+ python3.12-venv \
+ python3-pip \
  libjpeg-dev \
  zlib1g-dev \
  libgl1 \
